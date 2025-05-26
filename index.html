@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora DB</title>
+    <!-- CDNS Babel, REACT, REACT-DOM -->
+    <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+    <!-- CDN Bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Referenciar Srtyles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <nav class="navbar navbar-light bg-dark fixed-top"
+        <h4 style="text-align: start; color: white; width: 100%;"> Calculadora Diego Bran</h1>
+    </nav>
+</header>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        function Calculadora() {
+            // Inicializar en cero
+            const [display, setDisplay] = React.useState("0");
+
+            // Manejar clics en números
+            const manejarNumero = (numero) => {
+                if (display === "0") {
+                    setDisplay(numero); // Reemplaza "0" con el número
+                } else {
+                    setDisplay(display + numero); // Agrega el número al display
+                }
+            };
+
+            // Clicls
+            const manejarOperador = (operador) => {
+                if (display !== "0") {
+                    setDisplay(display + " " + operador + " ");
+                }
+            };
+
+            // puntoDecimal
+            const manejarPunto = () => {
+                const ultimoNumero = display.split(/[\+\-\*\/]/).pop();
+                if (!ultimoNumero.includes(".")) {
+                    setDisplay(display + "."); 
+                }
+            };
+
+            // Clean
+            const manejarLimpiar = () => {
+                setDisplay("0");
+            };
+
+            // Operador igual
+            const manejarIgual = () => {
+                try {
+                    const resultado = eval(display);
+                    setDisplay(resultado.toString());
+                } catch (error) {
+                    setDisplay("Error");
+                }
+            };
+
+            // Botones 
+            const botones = [
+                { label: "AC", className: "limpiar", onClick: manejarLimpiar },
+                { label: "7", className: "numero", onClick: () => manejarNumero("7") },
+                { label: "8", className: "numero", onClick: () => manejarNumero("8") },
+                { label: "9", className: "numero", onClick: () => manejarNumero("9") },
+                { label: "/", className: "operador", onClick: () => manejarOperador("/") },
+                { label: "4", className: "numero", onClick: () => manejarNumero("4") },
+                { label: "5", className: "numero", onClick: () => manejarNumero("5") },
+                { label: "6", className: "numero", onClick: () => manejarNumero("6") },
+                { label: "x", className: "operador", onClick: () => manejarOperador("*") },
+                { label: "1", className: "numero", onClick: () => manejarNumero("1") },
+                { label: "2", className: "numero", onClick: () => manejarNumero("2") },
+                { label: "3", className: "numero", onClick: () => manejarNumero("3") },
+                { label: "-", className: "operador", onClick: () => manejarOperador("-") },
+                { label: "0", className: "numero", onClick: () => manejarNumero("0") },
+                { label: ".", className: "numero", onClick: manejarPunto },
+                { label: "=", className: "igual", onClick: manejarIgual },
+                { label: "+", className: "operador", onClick: () => manejarOperador("+") },
+            ];
+
+            // Render calculadora
+            return (
+                <div className="calculadora">
+                    <div className="display">{display}</div>
+                    <div className="botones">
+                        {botones.map((boton, index) => (
+                            <button
+                                key={index}
+                                className={boton.className}
+                                onClick={boton.onClick}
+                            >
+                                {boton.label}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+        // Renderizado
+        const root = ReactDOM.createRoot(document.getElementById("root"));
+        root.render(<Calculadora />);
+    </script>
+</body>
+</html>
